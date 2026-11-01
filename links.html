@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <link rel="icon" href="Plugin icon - 1.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ссылки - BMP Metro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        bgLight: '#f4f4f5',
+                        bgDark: '#09090b',
+                        cardLight: '#ffffff',
+                        cardDark: '#18181b',
+                        borderLight: '#e4e4e7',
+                        borderDark: '#27272a',
+                        accent: '#e32636'
+                    }
+                }
+            }
+        }
+        // Init theme
+        if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            -webkit-font-smoothing: antialiased; 
+        }
+        .bento-card {
+            @apply bg-cardLight dark:bg-cardDark border border-borderLight dark:border-borderDark rounded-[2rem] p-6 sm:p-8 transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-md;
+        }
+        .bento-hover {
+            @apply hover:-translate-y-1 hover:border-accent/50 dark:hover:border-accent/50;
+        }
+        
+        /* Grid specific styles */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+            auto-rows: minmax(100px, auto);
+        }
+        
+        .page-fade {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom Scrollbar for iframes/containers */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+    </style>
+</head>
+<body class="text-gray-900 bg-bgLight dark:bg-bgDark dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Floating Navigation -->
+    <div class="w-full flex justify-center sticky top-6 z-50 px-4 pointer-events-none">
+        <header class="w-full max-w-6xl bg-white/80 dark:bg-[#18181b]/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-full px-6 py-3 flex justify-between items-center shadow-lg pointer-events-auto transition-colors">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-black overflow-hidden relative">
+                    <img src="Plugin icon - 1.png" alt="Logo" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'">
+                    <span class="relative z-10">M</span>
+                </div>
+                <span class="font-black text-xl tracking-tight hidden sm:block">BMP</span>
+            </a>
+            
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="/" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Дом</a>
+                <a href="development" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Разработка</a>
+                <a href="map" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Маршруты</a>
+                <a href="vacancies" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Вакансии</a>
+                <a href="documents" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Документы</a>
+                <a href="links" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-accent bg-gray-100 dark:bg-gray-800">Ссылки</a>
+                <a href="team" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Команда</a>
+                <a href="photos" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Фото</a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                </button>
+                <button id="mobile-btn" class="w-10 h-10 rounded-full flex lg:hidden items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </header>
+    </div>
+
+    <!-- Mobile Menu Modal -->
+    <div id="mobile-menu" class="fixed inset-0 bg-bgLight/95 dark:bg-bgDark/95 backdrop-blur-xl z-[40] hidden flex-col items-center justify-center gap-6 text-xl font-black">
+        <a href="/" class="hover:text-accent transition-colors">Дом</a>
+        <a href="development" class="hover:text-accent transition-colors">Разработка</a>
+        <a href="map" class="hover:text-accent transition-colors">Маршруты</a>
+        <a href="vacancies" class="hover:text-accent transition-colors">Вакансии</a>
+        <a href="documents" class="hover:text-accent transition-colors">Документы</a>
+        <a href="links" class="hover:text-accent transition-colors">Ссылки</a>
+        <a href="team" class="hover:text-accent transition-colors">Команда</a>
+        <a href="photos" class="hover:text-accent transition-colors">Фотографии</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-6xl mx-auto px-4 pt-12 pb-24 page-fade flex flex-col">
+        
+        <div class="mb-8 pl-2">
+            <span class="uppercase tracking-widest text-xs font-bold text-accent mb-2 block">Connect</span>
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight">Ссылки</h1>
+        </div>
+        
+        <div class="bento-grid">
+            <a href="https://discord.com/invite/NseVn8YWgB" target="_blank" class="bento-card bento-hover col-span-12 md:col-span-6 lg:col-span-4 flex flex-col justify-between aspect-square group bg-gradient-to-br hover:from-[#5865F2]/10 hover:to-transparent">
+                <div class="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-[#27272a] group-hover:bg-[#5865F2] text-gray-400 group-hover:text-white flex items-center justify-center transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                </div>
+                <div>
+                    <div class="text-3xl font-black mb-1 group-hover:text-[#5865F2] transition-colors">Discord</div>
+                    <div class="text-sm font-medium text-gray-500">Основное сообщество</div>
+                </div>
+            </a>
+
+            <a href="https://t.me/BMPMetroProject" target="_blank" class="bento-card bento-hover col-span-12 md:col-span-6 lg:col-span-4 flex flex-col justify-between aspect-square group bg-gradient-to-br hover:from-[#229ED9]/10 hover:to-transparent">
+                <div class="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-[#27272a] group-hover:bg-[#229ED9] text-gray-400 group-hover:text-white flex items-center justify-center transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.14-.26.26-.534.26l.213-3.053 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.653-.64.133-.953l11.536-4.442c.534-.196 1.006.128.832.957z"/></svg>
+                </div>
+                <div>
+                    <div class="text-3xl font-black mb-1 group-hover:text-[#229ED9] transition-colors">Telegram</div>
+                    <div class="text-sm font-medium text-gray-500">Новости проекта</div>
+                </div>
+            </a>
+
+            <a href="https://www.youtube.com/@bmp.roblox.project" target="_blank" class="bento-card bento-hover col-span-12 md:col-span-6 lg:col-span-4 flex flex-col justify-between aspect-square group bg-gradient-to-br hover:from-[#FF0000]/10 hover:to-transparent">
+                <div class="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-[#27272a] group-hover:bg-[#FF0000] text-gray-400 group-hover:text-white flex items-center justify-center transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </div>
+                <div>
+                    <div class="text-3xl font-black mb-1 group-hover:text-[#FF0000] transition-colors">YouTube</div>
+                    <div class="text-sm font-medium text-gray-500">Видео логи и обзоры</div>
+                </div>
+            </a>
+
+            <a href="https://www.tiktok.com/@bmp.metro.project?_r=1&_t=ZS-98zdgyMb8Y1" target="_blank" class="bento-card bento-hover col-span-12 md:col-span-6 flex flex-col justify-between group">
+                <div class="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-[#27272a] group-hover:bg-black dark:group-hover:bg-white text-gray-400 group-hover:text-white dark:group-hover:text-black flex items-center justify-center mb-6 transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.01.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.78-1.15 5.54-3.33 7.31-1.9 1.55-4.46 2.15-6.84 1.76-2.93-.47-5.51-2.48-6.52-5.26-1.11-3.07-.3-6.68 2.06-9.01 1.95-1.93 4.8-2.6 7.4-2.02.01 1.45.01 2.91.01 4.36-1.39-.42-2.98-.22-4.22.47-1.32.74-2.14 2.14-2.22 3.66-.08 1.62.66 3.23 1.94 4.14 1.34.95 3.19 1.12 4.74.57 1.65-.58 2.82-2.08 3.01-3.83.07-.63.06-1.27.06-1.91.01-6.19.01-12.38.01-18.57z"/></svg>
+                </div>
+                <div>
+                    <div class="text-3xl font-black mb-1 transition-colors">TikTok</div>
+                    <div class="text-sm font-medium text-gray-500">Короткие форматы</div>
+                </div>
+            </a>
+
+            <a href="https://www.roblox.com/communities/261151864/VasiKlein-Technologies#!/about" target="_blank" class="bento-card bento-hover col-span-12 md:col-span-12 lg:col-span-6 flex flex-col justify-between group bg-gradient-to-br hover:from-accent/10 hover:to-transparent">
+                <div class="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-[#27272a] group-hover:bg-accent text-gray-400 group-hover:text-white flex items-center justify-center mb-6 transition-colors">
+                    <span class="font-black text-2xl">R</span>
+                </div>
+                <div>
+                    <div class="text-3xl font-black mb-1 group-hover:text-accent transition-colors">Roblox Group</div>
+                    <div class="text-sm font-medium text-gray-500">Официальная группа VasiKlein Technologies</div>
+                </div>
+            </a>
+        </div>
+        
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="w-full border-t border-borderLight dark:border-borderDark py-8 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-medium text-gray-500">
+            <div>БМП МЕТРО © 2026. Проект в Roblox.</div>
+            <a href="mailto:workerowerk@gmail.com" class="hover:text-accent transition-colors">workerowerk@gmail.com</a>
+        </div>
+    </footer>
+
+    <script>
+        // Theme logic
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        
+        if (document.documentElement.classList.contains('dark')) {
+            lightIcon.classList.remove('hidden');
+        } else {
+            darkIcon.classList.remove('hidden');
+        }
+
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+            document.body.classList.toggle('overflow-hidden');
+        });
+    </script>
+</body>
+</html>

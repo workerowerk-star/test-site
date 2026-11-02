@@ -3,16 +3,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const nodes = document.querySelectorAll('.node');
     let currentIndex = 0;
     
+    // Если на странице нет слайдера (например, страница фотогалереи), скрипт просто ничего не делает
     if (!slider) return;
     
     const totalSlides = nodes.length;
     let isAnimating = false;
 
+    // Восстанавливаем позицию из localStorage при загрузке страницы,
+    // чтобы при возврате из галереи остаться на том же слайде
     const savedSlide = localStorage.getItem('currentSlide');
     if (savedSlide !== null) {
         currentIndex = parseInt(savedSlide);
+        // Убираем анимацию для моментального перехода
         slider.style.transition = 'none';
         goToSlide(currentIndex);
+        // Возвращаем анимацию обратно с небольшой задержкой
         setTimeout(() => {
             slider.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
         }, 50);
@@ -27,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nodes.forEach(node => node.classList.remove('active'));
         nodes[currentIndex].classList.add('active');
         
+        // Сохраняем номер текущего слайда
         localStorage.setItem('currentSlide', currentIndex);
         
         isAnimating = true;
@@ -43,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Touch Swipe Support
     let startX = 0;
     let endX = 0;
 
@@ -68,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Mouse Wheel Scroll Support
     window.addEventListener('wheel', (e) => {
         if (isAnimating) return;
         if (e.deltaY > 0) {

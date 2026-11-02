@@ -42,7 +42,7 @@ body {
 
 .content-wrapper {
     width: 100%;
-    max-width: 1800px;
+    max-width: 1800px; /* Увеличено с 1400px для поддержки более широких блоков */
     display: flex;
     flex-direction: column;
     align-items: center;

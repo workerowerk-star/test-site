@@ -64,7 +64,7 @@ body {
     font-weight: 400;
 }
 
-/* Макет "Маршруты" и "Разработка" */
+/* Макет "Маршруты" */
 .split-layout {
     flex-direction: row;
     justify-content: space-between;
@@ -104,20 +104,23 @@ body {
     border-radius: 12px;
 }
 
-/* Расширенные плашки для фреймов (Таблица и Календарь) */
-.iframes-container {
-    width: 100%;
-    max-width: 900px; /* Увеличена ширина */
+
+/* Макет Разработка (Сдвиг таблиц вниз-влево и вниз-вправо) */
+.dev-grid {
     display: flex;
-    flex-direction: column;
-    gap: 25px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .iframe-box {
-    width: 100%;
+    flex: 1; /* Оба блока занимают равную ширину */
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 300px;
 }
 
 .iframe-box h3 {
@@ -129,13 +132,14 @@ body {
 
 .iframe-box iframe {
     width: 100%;
-    height: 250px;
+    height: 350px; /* Увеличена высота, так как они теперь рядом */
     border: none;
     border-radius: 12px;
     background-color: #fff;
     filter: grayscale(0.15);
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
 
 /* Вакансии */
 .flex-column {
@@ -336,6 +340,15 @@ body {
         min-width: unset;
     }
     
+    .dev-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .iframe-box iframe {
+        height: 250px;
+    }
+    
     .iframe-box h3 {
         text-align: center;
     }
@@ -359,6 +372,5 @@ body {
     .title { font-size: 2.2rem; }
     .subtitle { font-size: 1.1rem; }
     .map-image { max-height: 40vh; }
-    .iframe-box iframe { height: 200px; }
     .job h2 { font-size: 2rem; }
 }

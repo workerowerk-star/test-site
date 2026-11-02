@@ -35,7 +35,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    padding-bottom: 150px;
+    padding-bottom: 150px; /* Space for timeline and footer */
     text-align: center;
 }
 
@@ -52,11 +52,76 @@ body {
     font-weight: 400;
 }
 
+/* Разделенный макет для Маршрутов и Разработки */
+.split-slide {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    padding: 0 10%;
+    padding-bottom: 150px;
+}
+
+.split-slide .title {
+    text-align: left;
+}
+
+.split-left {
+    width: 45%;
+}
+
+.split-right {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.small-map {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 2px solid var(--text-color);
+}
+
+.embed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.embed-container h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.data-frame {
+    width: 100%;
+    height: 220px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    filter: grayscale(0.2);
+}
+
+/* Вакансии */
 .flex-column {
     display: flex;
     flex-direction: column;
     gap: 40px;
     margin-top: 40px;
+}
+
+.center-content {
+    align-items: center;
+}
+
+.job {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .job h2 {
@@ -67,6 +132,7 @@ body {
 
 .job p {
     font-size: 1.2rem;
+    margin-bottom: 5px;
 }
 
 .links-grid {
@@ -98,10 +164,41 @@ body {
     color: var(--bg-color);
 }
 
+/* Команда (Текстовый формат, не кнопки) */
+.team-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 60px;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.team-name {
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.team-role {
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
 /* Timeline */
 .timeline-wrapper {
     position: fixed;
-    bottom: 80px;
+    bottom: 110px; /* Сделано выше */
     left: 5%;
     width: 90%;
     height: 60px;
@@ -167,15 +264,52 @@ body {
     opacity: 1;
 }
 
+/* Колонтитул (Footer) */
+.footer {
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    z-index: 99;
+}
+
 @media (max-width: 1024px) {
     .title { font-size: 3rem; }
     .label { font-size: 0.9rem; }
+    .split-slide { padding: 0 5%; padding-bottom: 150px; }
 }
 
 @media (max-width: 768px) {
     .title { font-size: 2.2rem; letter-spacing: 2px; }
     .subtitle { font-size: 1.1rem; }
-    .timeline-wrapper { bottom: 50px; }
+    
+    .split-slide {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+    .split-slide .title {
+        text-align: center;
+    }
+    .split-left, .split-right {
+        width: 100%;
+    }
+    .split-right {
+        margin-top: 30px;
+        align-items: center;
+    }
+    .embed-container h3 {
+        text-align: center;
+    }
+
+    .timeline-wrapper { bottom: 80px; }
+    .footer { bottom: 20px; font-size: 0.8rem; }
     .dot { width: 15px; height: 15px; }
     .label {
         position: absolute;

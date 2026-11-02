@@ -10,36 +10,54 @@
     <div class="slider-container" id="slider">
         <!-- Главная -->
         <div class="slide">
-            <h1 class="title">НАЗВАНИЕ / BMP METRO</h1>
-            <p class="subtitle">Виртуальная транспортная система. Инфо-табло проекта.</p>
+            <h1 class="title">BMP METRO</h1>
+            <p class="subtitle">Виртуальная транспортная система.</p>
         </div>
         
         <!-- Маршруты -->
-        <div class="slide">
-            <h1 class="title">МАРШРУТЫ</h1>
-            <div class="content-box">
+        <div class="slide split-slide">
+            <div class="split-left">
+                <h1 class="title">МАРШРУТЫ</h1>
                 <p class="subtitle">Схема линий Метрополитена Берёзовецка</p>
                 <a href="#" class="btn-outline">Скачать карту (PDF)</a>
+            </div>
+            <div class="split-right">
+                <!-- Карта не большого размера -->
+                <img src="map.png" alt="Схема" class="small-map">
             </div>
         </div>
 
         <!-- Разработка -->
-        <div class="slide">
-            <h1 class="title">РАЗРАБОТКА</h1>
-            <p class="subtitle">Статус задач и график работ. Подробности в Trello/Документах.</p>
+        <div class="slide split-slide">
+            <div class="split-left">
+                <h1 class="title">РАЗРАБОТКА</h1>
+                <p class="subtitle">Статус задач и график работ</p>
+            </div>
+            <div class="split-right">
+                <div class="embed-container">
+                    <h3>статус задач</h3>
+                    <iframe src="https://docs.google.com/spreadsheets/d/1-rKrpUxYyIHc5Tw4LySFf5qKHYaTdOKo1fRmQlOmZkY/preview" class="data-frame"></iframe>
+                </div>
+                <div class="embed-container">
+                    <h3>план разработки</h3>
+                    <iframe src="https://calendar.google.com/calendar/embed?color=%239fe1e7&src=workerowerk@gmail.com&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0" class="data-frame"></iframe>
+                </div>
+            </div>
         </div>
 
         <!-- Вакансии -->
         <div class="slide">
             <h1 class="title">ВАКАНСИИ</h1>
-            <div class="flex-column">
+            <div class="flex-column center-content">
                 <div class="job">
                     <h2>3D Моделлер</h2>
                     <p>Создание архитектуры станций, вагонов и объектов окружения.</p>
+                    <a href="https://discord.com/invite/s6j2kb4wnq" target="_blank" class="btn-outline">Подать заявку</a>
                 </div>
                 <div class="job">
                     <h2>Скриптер</h2>
                     <p>Написание систем управления поездами и игровой логики.</p>
+                    <a href="https://discord.com/invite/s6j2kb4wnq" target="_blank" class="btn-outline">Подать заявку</a>
                 </div>
             </div>
         </div>
@@ -66,10 +84,19 @@
         <!-- Команда -->
         <div class="slide">
             <h1 class="title">КОМАНДА</h1>
-            <div class="links-grid">
-                <span class="btn-outline">VasiKlein - Founder / Dev</span>
-                <span class="btn-outline">GolDayss - Web Designer</span>
-                <span class="btn-outline">Misha_Fan122 - Project Help</span>
+            <div class="team-grid">
+                <div class="team-member">
+                    <span class="team-name">VasiKlein</span>
+                    <span class="team-role">Founder / Dev</span>
+                </div>
+                <div class="team-member">
+                    <span class="team-name">GolDayss</span>
+                    <span class="team-role">Web Designer</span>
+                </div>
+                <div class="team-member">
+                    <span class="team-name">Misha_Fan122</span>
+                    <span class="team-role">Project Help</span>
+                </div>
             </div>
         </div>
         
@@ -122,6 +149,11 @@
                 <span class="label">Фото</span>
             </div>
         </div>
+    </div>
+
+    <!-- Нижний колонтитул -->
+    <div class="footer">
+        BMP 2026 ROBLOX
     </div>
 
     <script src="script.js"></script>

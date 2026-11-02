@@ -58,9 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('wheel', (e) => {
         if (isAnimating) return;
         if (e.deltaY > 0) {
-            goToSlide(currentIndex + 1); // Scroll down -> next slide
+            goToSlide(currentIndex + 1);
         } else if (e.deltaY < 0) {
-            goToSlide(currentIndex - 1); // Scroll up -> prev slide
+            goToSlide(currentIndex - 1);
         }
     }, { passive: true });
 });

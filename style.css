@@ -25,18 +25,30 @@ body {
     width: 800vw; /* 8 slides */
     height: 100vh;
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
 }
 
 .slide {
-    width: 100vw;
+    flex: 0 0 100vw; /* СТРОГО фиксируем ширину слайда, чтобы они не сжимались */
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    padding-bottom: 150px; /* Space for timeline and footer */
+    padding: 60px 5% 140px 5%; /* Отступы: сверху 60px, снизу 140px для таймлайна */
+    overflow-y: auto; /* Если контент большой, появится прокрутка только внутри слайда */
+    overflow-x: hidden;
+}
+
+.content-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    margin: auto;
 }
 
 .title {
@@ -52,69 +64,85 @@ body {
     font-weight: 400;
 }
 
-/* Разделенный макет для Маршрутов и Разработки */
-.split-slide {
+/* Макет "Маршруты" и "Разработка" */
+.split-layout {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     text-align: left;
-    padding: 0 10%;
-    padding-bottom: 150px;
-}
-
-.split-slide .title {
-    text-align: left;
-}
-
-.split-left {
-    width: 45%;
-}
-
-.split-right {
-    width: 45%;
-    display: flex;
-    flex-direction: column;
     gap: 40px;
 }
 
-.small-map {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    object-fit: contain;
-    border-radius: 10px;
-    border: 2px solid var(--text-color);
-}
-
-.embed-container {
+.split-left {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-start;
+    text-align: left;
+    min-width: 300px; /* Предотвращает сплющивание текста */
 }
 
-.embed-container h3 {
-    font-size: 1.2rem;
-    font-weight: 400;
+.split-left .title {
+    margin-bottom: 10px;
 }
 
-.data-frame {
+.split-right {
+    flex: 1.5; /* Блок с контентом шире, чем блок с текстом */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 220px;
+    min-width: 300px;
+}
+
+/* Карта */
+.map-image {
+    width: 100%;
+    max-height: 55vh; /* Карта идеально влезет по высоте */
+    object-fit: contain; /* Сохраняет пропорции без обрезки */
+    border-radius: 12px;
+}
+
+/* Расширенные плашки для фреймов (Таблица и Календарь) */
+.iframes-container {
+    width: 100%;
+    max-width: 900px; /* Увеличена ширина */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.iframe-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.iframe-box h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: lowercase;
+    letter-spacing: 1px;
+}
+
+.iframe-box iframe {
+    width: 100%;
+    height: 250px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background-color: #fff;
-    filter: grayscale(0.2);
+    filter: grayscale(0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 /* Вакансии */
 .flex-column {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 50px;
     margin-top: 40px;
-}
-
-.center-content {
     align-items: center;
 }
 
@@ -122,6 +150,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    max-width: 600px;
 }
 
 .job h2 {
@@ -132,22 +162,23 @@ body {
 
 .job p {
     font-size: 1.2rem;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
+/* Кнопки и Ссылки */
 .links-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
     margin-top: 40px;
-    max-width: 800px;
+    max-width: 900px;
 }
 
 .btn-outline {
     border: 2px solid var(--text-color);
     color: var(--text-color);
-    padding: 15px 30px;
+    padding: 15px 35px;
     border-radius: 50px;
     font-size: 1.2rem;
     font-weight: 700;
@@ -156,7 +187,7 @@ body {
     cursor: pointer;
     background: transparent;
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .btn-outline:hover {
@@ -164,14 +195,14 @@ body {
     color: var(--bg-color);
 }
 
-/* Команда (Текстовый формат, не кнопки) */
+/* Команда */
 .team-grid {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 60px;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 60px;
 }
 
 .team-member {
@@ -182,23 +213,23 @@ body {
 }
 
 .team-name {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 900;
-    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .team-role {
     font-size: 0.9rem;
-    font-weight: 400;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.7;
+    letter-spacing: 2px;
+    opacity: 0.5;
 }
 
-/* Timeline */
+/* Таймлайн (Дорожка) */
 .timeline-wrapper {
     position: fixed;
-    bottom: 110px; /* Сделано выше */
+    bottom: 120px; /* Дорожка приподнята выше */
     left: 5%;
     width: 90%;
     height: 60px;
@@ -264,61 +295,70 @@ body {
     opacity: 1;
 }
 
-/* Колонтитул (Footer) */
+/* Нижний колонтитул */
 .footer {
     position: fixed;
-    bottom: 30px;
+    bottom: 25px;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    opacity: 0.5;
+    opacity: 0.6;
     z-index: 99;
 }
 
-@media (max-width: 1024px) {
-    .title { font-size: 3rem; }
-    .label { font-size: 0.9rem; }
-    .split-slide { padding: 0 5%; padding-bottom: 150px; }
+/* Адаптивность (предотвращение съезжания текста) */
+@media (max-width: 1200px) {
+    .title { font-size: 4rem; }
+    .label { font-size: 1rem; }
 }
 
-@media (max-width: 768px) {
-    .title { font-size: 2.2rem; letter-spacing: 2px; }
-    .subtitle { font-size: 1.1rem; }
+@media (max-width: 900px) {
+    .title { font-size: 3rem; letter-spacing: 3px; }
     
-    .split-slide {
+    .split-layout {
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         text-align: center;
+        gap: 30px;
     }
-    .split-slide .title {
-        text-align: center;
-    }
-    .split-left, .split-right {
-        width: 100%;
-    }
-    .split-right {
-        margin-top: 30px;
+    
+    .split-left {
         align-items: center;
+        text-align: center;
+        min-width: unset;
     }
-    .embed-container h3 {
+    
+    .split-right {
+        min-width: unset;
+    }
+    
+    .iframe-box h3 {
         text-align: center;
     }
 
     .timeline-wrapper { bottom: 80px; }
-    .footer { bottom: 20px; font-size: 0.8rem; }
-    .dot { width: 15px; height: 15px; }
+    .footer { bottom: 15px; font-size: 0.8rem; }
+    
+    .dot { width: 16px; height: 16px; margin-bottom: 10px; }
     .label {
         position: absolute;
         top: 30px;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         transform: translateX(-50%);
         left: 50%;
         writing-mode: vertical-rl;
         text-orientation: mixed;
     }
-    .slide { padding-bottom: 200px; }
+}
+
+@media (max-width: 600px) {
+    .title { font-size: 2.2rem; }
+    .subtitle { font-size: 1.1rem; }
+    .map-image { max-height: 40vh; }
+    .iframe-box iframe { height: 200px; }
+    .job h2 { font-size: 2rem; }
 }

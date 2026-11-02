@@ -11,22 +11,16 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
                     colors: {
-                        bgLight: '#f4f4f5',
-                        bgDark: '#09090b',
-                        cardLight: '#ffffff',
-                        cardDark: '#18181b',
-                        borderLight: '#e4e4e7',
-                        borderDark: '#27272a',
+                        bgLight: '#f4f4f5', bgDark: '#09090b',
+                        cardLight: '#ffffff', cardDark: '#18181b',
+                        borderLight: '#e4e4e7', borderDark: '#27272a',
                         accent: '#e32636'
                     }
                 }
             }
         }
-        // Init theme
         if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.remove('dark');
         } else {
@@ -37,42 +31,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            -webkit-font-smoothing: antialiased; 
-        }
+        body { -webkit-font-smoothing: antialiased; }
         .bento-card {
-            @apply bg-cardLight dark:bg-cardDark border border-borderLight dark:border-borderDark rounded-[2rem] p-6 sm:p-8 transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-md;
+            @apply bg-cardLight dark:bg-cardDark border border-borderLight dark:border-borderDark rounded-2xl p-6 sm:p-8 transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-md;
         }
         .bento-hover {
             @apply hover:-translate-y-1 hover:border-accent/50 dark:hover:border-accent/50;
         }
-        
-        /* Grid specific styles */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 1.5rem;
             auto-rows: minmax(100px, auto);
         }
-        
-        .page-fade {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Custom Scrollbar for iframes/containers */
+        .page-fade { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e32636; border-radius: 10px; }
     </style>
 </head>
 <body class="text-gray-900 bg-bgLight dark:bg-bgDark dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
-
-    <!-- Floating Navigation -->
     <div class="w-full flex justify-center sticky top-6 z-50 px-4 pointer-events-none">
         <header class="w-full max-w-6xl bg-white/80 dark:bg-[#18181b]/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-full px-6 py-3 flex justify-between items-center shadow-lg pointer-events-auto transition-colors">
             <a href="/" class="flex items-center gap-3 group">
@@ -83,16 +65,17 @@
                 <span class="font-black text-xl tracking-tight hidden sm:block">BMP</span>
             </a>
             
-            <nav class="hidden lg:flex items-center gap-1">
-                <a href="/" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Дом</a>
-                <a href="development" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Разработка</a>
-                <a href="map" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Маршруты</a>
-                <a href="vacancies" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-accent bg-gray-100 dark:bg-gray-800">Вакансии</a>
-                <a href="documents" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Документы</a>
-                <a href="links" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Ссылки</a>
-                <a href="team" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Команда</a>
-                <a href="photos" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Фото</a>
-            </nav>
+            <nav class="hidden lg:flex items-center gap-1 relative" id="main-nav">
+<div id="nav-bg" class="absolute left-0 h-9 bg-gray-200 dark:bg-gray-800 rounded-full transition-all duration-300 ease-in-out z-0 opacity-0 pointer-events-none"></div>
+<a href="/" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Дом</a>
+<a href="development" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Разработка</a>
+<a href="map" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Маршруты</a>
+<a href="vacancies" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-accent active-nav">Вакансии</a>
+<a href="documents" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Документы</a>
+<a href="links" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Ссылки</a>
+<a href="team" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Команда</a>
+<a href="photos" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Фото</a>
+</nav>
 
             <div class="flex items-center gap-2">
                 <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -118,93 +101,103 @@
         <a href="photos" class="hover:text-accent transition-colors">Фотографии</a>
     </div>
 
-    <!-- Main Content -->
     <main class="flex-grow w-full max-w-6xl mx-auto px-4 pt-12 pb-24 page-fade flex flex-col">
-        
+
         <div class="mb-8 pl-2">
             <span class="uppercase tracking-widest text-xs font-bold text-accent mb-2 block">Jobs</span>
             <h1 class="text-4xl md:text-5xl font-black tracking-tight">Вакансии</h1>
         </div>
         
         <div class="bento-grid">
-            <!-- Vacancy 1 -->
-            <div class="bento-card col-span-12 lg:col-span-6 flex flex-col !p-0">
-                <div class="w-full h-48 bg-gray-100 dark:bg-[#1a1a1d] border-b border-borderLight dark:border-borderDark">
-                    <img src="Трудоустройство.png" alt="3D моделлер" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            <div class="bento-card col-span-12 lg:col-span-6 flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span class="text-xs font-bold uppercase tracking-widest">Открыто</span>
                 </div>
-                <div class="p-8 flex flex-col flex-grow">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                        <span class="text-xs font-bold uppercase tracking-widest">Открыто</span>
-                    </div>
-                    <h2 class="text-3xl font-black mb-4">3D Моделлер</h2>
-                    <p class="text-gray-500 font-medium mb-8">Создание архитектуры станций, вагонов и объектов окружения в Roblox Studio и Blender. Требуется опыт работы с полигональным моделированием.</p>
-                    <a href="https://discord.com/invite/s6j2kb4wnq" target="_blank" class="mt-auto block w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm text-center bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors">
-                        Подать заявку
-                    </a>
-                </div>
+                <h2 class="text-3xl font-black mb-4">3D Моделлер</h2>
+                <p class="text-gray-500 font-medium mb-8">Создание архитектуры станций, вагонов и объектов окружения в Roblox Studio и Blender. Требуется опыт работы с полигональным моделированием.</p>
+                <a href="https://discord.com/invite/s6j2kb4wnq" target="_blank" class="mt-auto block w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm text-center bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors">
+                    Подать заявку
+                </a>
             </div>
 
-            <!-- Vacancy 2 -->
-            <div class="bento-card col-span-12 lg:col-span-6 flex flex-col !p-0">
-                <div class="w-full h-48 bg-gray-100 dark:bg-[#1a1a1d] border-b border-borderLight dark:border-borderDark">
-                    <img src="Трудоустройство2.png" alt="Скриптер" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            <div class="bento-card col-span-12 lg:col-span-6 flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span class="text-xs font-bold uppercase tracking-widest">Открыто</span>
                 </div>
-                <div class="p-8 flex flex-col flex-grow">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                        <span class="text-xs font-bold uppercase tracking-widest">Открыто</span>
-                    </div>
-                    <h2 class="text-3xl font-black mb-4">Скриптер</h2>
-                    <p class="text-gray-500 font-medium mb-8">Написание систем управления поездами, светофорами и игровой логики на Luau. Необходим опыт написания надежного и оптимизированного кода.</p>
-                    <a href="https://discord.com/invite/s6j2kb4wnq" target="_blank" class="mt-auto block w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm text-center bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors">
-                        Подать заявку
-                    </a>
-                </div>
+                <h2 class="text-3xl font-black mb-4">Скриптер</h2>
+                <p class="text-gray-500 font-medium mb-8">Написание систем управления поездами, светофорами и игровой логики на Luau. Необходим опыт написания надежного и оптимизированного кода.</p>
+                <a href="https://discord.com/invite/s6j2kb4wnq" target="_blank" class="mt-auto block w-full py-4 rounded-xl font-bold uppercase tracking-widest text-sm text-center bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors">
+                    Подать заявку
+                </a>
             </div>
         </div>
-        
     </main>
 
-    <!-- Simple Footer -->
     <footer class="w-full border-t border-borderLight dark:border-borderDark py-8 mt-auto">
         <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-medium text-gray-500">
-            <div>БМП МЕТРО © 2026. Проект в Roblox.</div>
+            <div>BMP Metro 2026. Проект в Roblox.</div>
             <a href="mailto:workerowerk@gmail.com" class="hover:text-accent transition-colors">workerowerk@gmail.com</a>
         </div>
     </footer>
 
     <script>
+        // Nav Sliding Oval Logic
+        const nav = document.getElementById('main-nav');
+        if(nav) {{
+            const navBg = document.getElementById('nav-bg');
+            const items = nav.querySelectorAll('.nav-item');
+            const activeItem = nav.querySelector('.active-nav');
+
+            function moveBg(item) {{
+                if(!item) return;
+                navBg.style.width = item.offsetWidth + 'px';
+                navBg.style.transform = `translateX(${{item.offsetLeft}}px)`;
+                navBg.style.opacity = '1';
+            }}
+            
+            if(activeItem) {{
+                setTimeout(() => moveBg(activeItem), 50);
+                window.addEventListener('resize', () => moveBg(activeItem));
+            }}
+
+            items.forEach(item => {{
+                item.addEventListener('mouseenter', () => moveBg(item));
+                item.addEventListener('mouseleave', () => moveBg(activeItem));
+            }});
+        }}
+
         // Theme logic
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
         const lightIcon = document.getElementById('theme-toggle-light-icon');
         
-        if (document.documentElement.classList.contains('dark')) {
+        if (document.documentElement.classList.contains('dark')) {{
             lightIcon.classList.remove('hidden');
-        } else {
+        }} else {{
             darkIcon.classList.remove('hidden');
-        }
+        }}
 
-        document.getElementById('theme-toggle').addEventListener('click', function() {
+        document.getElementById('theme-toggle').addEventListener('click', function() {{
             darkIcon.classList.toggle('hidden');
             lightIcon.classList.toggle('hidden');
-            if (document.documentElement.classList.contains('dark')) {
+            if (document.documentElement.classList.contains('dark')) {{
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('color-theme', 'light');
-            } else {
+            }} else {{
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('color-theme', 'dark');
-            }
-        });
+            }}
+        }});
 
         // Mobile menu toggle
         const btn = document.getElementById('mobile-btn');
         const menu = document.getElementById('mobile-menu');
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', () => {{
             menu.classList.toggle('hidden');
             menu.classList.toggle('flex');
             document.body.classList.toggle('overflow-hidden');
-        });
+        }});
     </script>
 </body>
 </html>

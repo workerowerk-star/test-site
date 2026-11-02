@@ -11,22 +11,16 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'] },
                     colors: {
-                        bgLight: '#f4f4f5',
-                        bgDark: '#09090b',
-                        cardLight: '#ffffff',
-                        cardDark: '#18181b',
-                        borderLight: '#e4e4e7',
-                        borderDark: '#27272a',
+                        bgLight: '#f4f4f5', bgDark: '#09090b',
+                        cardLight: '#ffffff', cardDark: '#18181b',
+                        borderLight: '#e4e4e7', borderDark: '#27272a',
                         accent: '#e32636'
                     }
                 }
             }
         }
-        // Init theme
         if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.remove('dark');
         } else {
@@ -37,42 +31,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            -webkit-font-smoothing: antialiased; 
-        }
+        body { -webkit-font-smoothing: antialiased; }
         .bento-card {
-            @apply bg-cardLight dark:bg-cardDark border border-borderLight dark:border-borderDark rounded-[2rem] p-6 sm:p-8 transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-md;
+            @apply bg-cardLight dark:bg-cardDark border border-borderLight dark:border-borderDark rounded-2xl p-6 sm:p-8 transition-all duration-300 relative overflow-hidden shadow-sm hover:shadow-md;
         }
         .bento-hover {
             @apply hover:-translate-y-1 hover:border-accent/50 dark:hover:border-accent/50;
         }
-        
-        /* Grid specific styles */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 1.5rem;
             auto-rows: minmax(100px, auto);
         }
-        
-        .page-fade {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Custom Scrollbar for iframes/containers */
+        .page-fade { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e32636; border-radius: 10px; }
     </style>
 </head>
 <body class="text-gray-900 bg-bgLight dark:bg-bgDark dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
-
-    <!-- Floating Navigation -->
     <div class="w-full flex justify-center sticky top-6 z-50 px-4 pointer-events-none">
         <header class="w-full max-w-6xl bg-white/80 dark:bg-[#18181b]/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-full px-6 py-3 flex justify-between items-center shadow-lg pointer-events-auto transition-colors">
             <a href="/" class="flex items-center gap-3 group">
@@ -83,16 +65,17 @@
                 <span class="font-black text-xl tracking-tight hidden sm:block">BMP</span>
             </a>
             
-            <nav class="hidden lg:flex items-center gap-1">
-                <a href="/" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Дом</a>
-                <a href="development" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Разработка</a>
-                <a href="map" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Маршруты</a>
-                <a href="vacancies" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Вакансии</a>
-                <a href="documents" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Документы</a>
-                <a href="links" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Ссылки</a>
-                <a href="team" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ">Команда</a>
-                <a href="photos" class="px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-accent bg-gray-100 dark:bg-gray-800">Фото</a>
-            </nav>
+            <nav class="hidden lg:flex items-center gap-1 relative" id="main-nav">
+<div id="nav-bg" class="absolute left-0 h-9 bg-gray-200 dark:bg-gray-800 rounded-full transition-all duration-300 ease-in-out z-0 opacity-0 pointer-events-none"></div>
+<a href="/" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Дом</a>
+<a href="development" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Разработка</a>
+<a href="map" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Маршруты</a>
+<a href="vacancies" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Вакансии</a>
+<a href="documents" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Документы</a>
+<a href="links" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Ссылки</a>
+<a href="team" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">Команда</a>
+<a href="photos" class="nav-item relative z-10 px-4 py-2 rounded-full text-sm font-bold transition-colors text-accent active-nav">Фото</a>
+</nav>
 
             <div class="flex items-center gap-2">
                 <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -118,139 +101,137 @@
         <a href="photos" class="hover:text-accent transition-colors">Фотографии</a>
     </div>
 
-    <!-- Main Content -->
     <main class="flex-grow w-full max-w-6xl mx-auto px-4 pt-12 pb-24 page-fade flex flex-col">
-        
+
         <div class="mb-8 pl-2">
             <span class="uppercase tracking-widest text-xs font-bold text-accent mb-2 block">Gallery</span>
             <h1 class="text-4xl md:text-5xl font-black tracking-tight">Фотографии</h1>
+            <p class="text-gray-500 font-medium mt-2">Архив фотографий по станциям</p>
         </div>
         
-        <div class="bento-grid">
-            <!-- Photo 1 -->
-            <div class="bento-card bento-hover col-span-12 sm:col-span-6 lg:col-span-8 row-span-2 p-3 cursor-pointer group" onclick="openModal(this)">
-                <div class="w-full h-full relative rounded-2xl overflow-hidden min-h-[300px] bg-gray-100 dark:bg-gray-900">
-                    <img src="1.png" alt="Станция Институтская" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500" onerror="this.style.display='none'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <h3 class="absolute bottom-6 left-6 text-white font-black text-2xl uppercase tracking-wide">Институтская</h3>
-                </div>
+        <!-- Horizontal scrolling container -->
+        <div class="flex overflow-x-auto gap-6 pb-8 pt-4 snap-x custom-scrollbar">
+            
+            <!-- Folder 1 -->
+            <div class="bento-card min-w-[280px] h-[240px] flex flex-col justify-center items-center gap-4 snap-center shrink-0 border-t-4 border-t-accent hover:-translate-y-2 transition-transform cursor-pointer shadow-md bg-gradient-to-b from-gray-50 to-white dark:from-[#1e1e22] dark:to-cardDark group">
+                <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                <h3 class="font-black text-xl text-center group-hover:text-accent transition-colors">Институтская</h3>
+                <span class="text-xs uppercase tracking-widest font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-3 py-1 rounded-full">0 фото</span>
+            </div>
+
+            <!-- Folder 2 -->
+            <div class="bento-card min-w-[280px] h-[240px] flex flex-col justify-center items-center gap-4 snap-center shrink-0 border-t-4 border-t-accent hover:-translate-y-2 transition-transform cursor-pointer shadow-md bg-gradient-to-b from-gray-50 to-white dark:from-[#1e1e22] dark:to-cardDark group">
+                <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                <h3 class="font-black text-xl text-center group-hover:text-accent transition-colors">Проспект Новаторов</h3>
+                <span class="text-xs uppercase tracking-widest font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-3 py-1 rounded-full">0 фото</span>
+            </div>
+
+            <!-- Folder 3 -->
+            <div class="bento-card min-w-[280px] h-[240px] flex flex-col justify-center items-center gap-4 snap-center shrink-0 border-t-4 border-t-accent hover:-translate-y-2 transition-transform cursor-pointer shadow-md bg-gradient-to-b from-gray-50 to-white dark:from-[#1e1e22] dark:to-cardDark group">
+                <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                <h3 class="font-black text-xl text-center group-hover:text-accent transition-colors">Обсерватория</h3>
+                <span class="text-xs uppercase tracking-widest font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-3 py-1 rounded-full">0 фото</span>
+            </div>
+
+            <!-- Folder 4 -->
+            <div class="bento-card min-w-[280px] h-[240px] flex flex-col justify-center items-center gap-4 snap-center shrink-0 border-t-4 border-t-accent hover:-translate-y-2 transition-transform cursor-pointer shadow-md bg-gradient-to-b from-gray-50 to-white dark:from-[#1e1e22] dark:to-cardDark group">
+                <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                <h3 class="font-black text-xl text-center group-hover:text-accent transition-colors">Покровская</h3>
+                <span class="text-xs uppercase tracking-widest font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-3 py-1 rounded-full">0 фото</span>
+            </div>
+
+            <!-- Folder 5 -->
+            <div class="bento-card min-w-[280px] h-[240px] flex flex-col justify-center items-center gap-4 snap-center shrink-0 border-t-4 border-t-accent hover:-translate-y-2 transition-transform cursor-pointer shadow-md bg-gradient-to-b from-gray-50 to-white dark:from-[#1e1e22] dark:to-cardDark group">
+                <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                <h3 class="font-black text-xl text-center group-hover:text-accent transition-colors">Электросила</h3>
+                <span class="text-xs uppercase tracking-widest font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-3 py-1 rounded-full">0 фото</span>
+            </div>
+
+            <!-- Folder 6 -->
+            <div class="bento-card min-w-[280px] h-[240px] flex flex-col justify-center items-center gap-4 snap-center shrink-0 border-t-4 border-t-accent hover:-translate-y-2 transition-transform cursor-pointer shadow-md bg-gradient-to-b from-gray-50 to-white dark:from-[#1e1e22] dark:to-cardDark group">
+                <svg class="w-20 h-20 text-gray-300 dark:text-gray-700 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                </svg>
+                <h3 class="font-black text-xl text-center group-hover:text-accent transition-colors">Ольховка</h3>
+                <span class="text-xs uppercase tracking-widest font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-3 py-1 rounded-full">0 фото</span>
             </div>
             
-            <!-- Photo 2 -->
-            <div class="bento-card bento-hover col-span-12 sm:col-span-6 lg:col-span-4 row-span-1 p-3 cursor-pointer group" onclick="openModal(this)">
-                <div class="w-full h-full relative rounded-2xl overflow-hidden min-h-[200px] bg-gray-100 dark:bg-gray-900">
-                    <img src="2.png" alt="Навигация Ольховка" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500" onerror="this.style.display='none'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <h3 class="absolute bottom-4 left-4 text-white font-black uppercase text-sm tracking-wide">Навигация «Ольховка»</h3>
-                </div>
-            </div>
-
-            <!-- Photo 3 -->
-            <div class="bento-card bento-hover col-span-12 sm:col-span-6 lg:col-span-4 row-span-1 p-3 cursor-pointer group" onclick="openModal(this)">
-                <div class="w-full h-full relative rounded-2xl overflow-hidden min-h-[200px] bg-gray-100 dark:bg-gray-900">
-                    <img src="3.png" alt="Схема маршрутов на станции" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500" onerror="this.style.display='none'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <h3 class="absolute bottom-4 left-4 text-white font-black uppercase text-sm tracking-wide">Инфостенд</h3>
-                </div>
-            </div>
-
-            <!-- Photo 4 -->
-            <div class="bento-card bento-hover col-span-12 sm:col-span-6 lg:col-span-12 row-span-1 p-3 cursor-pointer group" onclick="openModal(this)">
-                <div class="w-full h-full relative rounded-2xl overflow-hidden min-h-[250px] bg-gray-100 dark:bg-gray-900">
-                    <img src="4.png" alt="Платформа станции" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500" onerror="this.style.display='none'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                    <h3 class="absolute bottom-6 left-6 text-white font-black text-xl uppercase tracking-wide">Платформа</h3>
-                </div>
-            </div>
         </div>
-
-        <!-- Lightbox -->
-        <div id="photoModal" class="fixed inset-0 z-[100] bg-bgDark/95 backdrop-blur-md hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
-            <button onclick="closeModal()" class="absolute top-6 right-6 w-12 h-12 bg-white/10 text-white rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <img id="modalImage" src="" alt="Zoom" class="max-w-[90%] max-h-[85vh] object-contain rounded-xl shadow-2xl scale-95 transition-transform duration-300">
-            <p id="modalCaption" class="text-white font-black uppercase tracking-widest mt-6 text-lg"></p>
-        </div>
-        
-        <script>
-            function openModal(card) {
-                const img = card.querySelector('img');
-                if(!img || img.style.display === 'none') return;
-                
-                const modal = document.getElementById('photoModal');
-                const modalImg = document.getElementById('modalImage');
-                const modalCap = document.getElementById('modalCaption');
-                
-                modalImg.src = img.src;
-                modalCap.textContent = card.querySelector('h3').textContent;
-                
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                
-                void modal.offsetWidth; // reflow
-                
-                modal.classList.remove('opacity-0');
-                modalImg.classList.remove('scale-95');
-                modalImg.classList.add('scale-100');
-            }
-            
-            function closeModal() {
-                const modal = document.getElementById('photoModal');
-                const modalImg = document.getElementById('modalImage');
-                
-                modal.classList.add('opacity-0');
-                modalImg.classList.remove('scale-100');
-                modalImg.classList.add('scale-95');
-                
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                }, 300);
-            }
-        </script>
-        
     </main>
 
-    <!-- Simple Footer -->
     <footer class="w-full border-t border-borderLight dark:border-borderDark py-8 mt-auto">
         <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-medium text-gray-500">
-            <div>БМП МЕТРО © 2026. Проект в Roblox.</div>
+            <div>BMP Metro 2026. Проект в Roblox.</div>
             <a href="mailto:workerowerk@gmail.com" class="hover:text-accent transition-colors">workerowerk@gmail.com</a>
         </div>
     </footer>
 
     <script>
+        // Nav Sliding Oval Logic
+        const nav = document.getElementById('main-nav');
+        if(nav) {{
+            const navBg = document.getElementById('nav-bg');
+            const items = nav.querySelectorAll('.nav-item');
+            const activeItem = nav.querySelector('.active-nav');
+
+            function moveBg(item) {{
+                if(!item) return;
+                navBg.style.width = item.offsetWidth + 'px';
+                navBg.style.transform = `translateX(${{item.offsetLeft}}px)`;
+                navBg.style.opacity = '1';
+            }}
+            
+            if(activeItem) {{
+                setTimeout(() => moveBg(activeItem), 50);
+                window.addEventListener('resize', () => moveBg(activeItem));
+            }}
+
+            items.forEach(item => {{
+                item.addEventListener('mouseenter', () => moveBg(item));
+                item.addEventListener('mouseleave', () => moveBg(activeItem));
+            }});
+        }}
+
         // Theme logic
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
         const lightIcon = document.getElementById('theme-toggle-light-icon');
         
-        if (document.documentElement.classList.contains('dark')) {
+        if (document.documentElement.classList.contains('dark')) {{
             lightIcon.classList.remove('hidden');
-        } else {
+        }} else {{
             darkIcon.classList.remove('hidden');
-        }
+        }}
 
-        document.getElementById('theme-toggle').addEventListener('click', function() {
+        document.getElementById('theme-toggle').addEventListener('click', function() {{
             darkIcon.classList.toggle('hidden');
             lightIcon.classList.toggle('hidden');
-            if (document.documentElement.classList.contains('dark')) {
+            if (document.documentElement.classList.contains('dark')) {{
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('color-theme', 'light');
-            } else {
+            }} else {{
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('color-theme', 'dark');
-            }
-        });
+            }}
+        }});
 
         // Mobile menu toggle
         const btn = document.getElementById('mobile-btn');
         const menu = document.getElementById('mobile-menu');
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', () => {{
             menu.classList.toggle('hidden');
             menu.classList.toggle('flex');
             document.body.classList.toggle('overflow-hidden');
-        });
+        }});
     </script>
 </body>
 </html>

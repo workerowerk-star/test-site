@@ -20,6 +20,7 @@ body {
     width: 100vw;
 }
 
+/* Десктопная версия: Горизонтальный слайдер */
 .slider-container {
     display: flex;
     width: 800vw;
@@ -262,24 +263,44 @@ body {
     z-index: 99;
 }
 
-@media (max-width: 1200px) {
-    .title, .title-main { font-size: 4rem; }
-    .label { font-size: 1rem; }
-}
-
+/* Мобильная адаптация: Вертикальный скролл */
 @media (max-width: 900px) {
+    /* Разрешаем обычный скролл на мобилках */
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    /* Убираем жесткую ширину для контейнера */
+    .slider-container {
+        width: 100vw;
+        height: auto;
+        flex-direction: column; /* Элементы идут друг под другом */
+        transform: none !important; /* Отключаем горизонтальную трансформацию */
+        transition: none; /* Отключаем анимацию */
+    }
+
+    .slide {
+        width: 100vw;
+        height: auto; /* Высота подстраивается под контент */
+        min-height: 100vh; /* Минимум один экран на секцию */
+        padding: 60px 5% 60px 5%; /* Убираем огромный отступ снизу */
+    }
+
     .title, .title-main { font-size: 3rem; letter-spacing: 3px; }
-    .timeline-wrapper { bottom: 80px; }
-    .footer { bottom: 15px; font-size: 0.8rem; }
-    .dot { width: 16px; height: 16px; margin-bottom: 10px; }
-    .label {
-        position: absolute;
-        top: 30px;
-        font-size: 0.75rem;
-        transform: translateX(-50%);
-        left: 50%;
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
+    
+    /* Скрываем горизонтальный таймлайн на мобильных */
+    .timeline-wrapper { 
+        display: none; 
+    }
+    
+    /* Колонтитул оставляем, но делаем его статичным или прячем */
+    .footer { 
+        position: relative;
+        bottom: 0;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 0.8rem; 
     }
 }
 
@@ -287,4 +308,9 @@ body {
     .title, .title-main { font-size: 2.2rem; white-space: normal; } 
     .subtitle { font-size: 1.1rem; }
     .job h2 { font-size: 2rem; }
+    
+    .dev-buttons {
+        flex-direction: column;
+        gap: 20px;
+    }
 }
